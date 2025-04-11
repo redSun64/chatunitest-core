@@ -60,7 +60,32 @@ public enum Model {
             .withTemperature(0.5)
             .withFrequencyPenalty(0)
             .withPresencePenalty(0)
+            .build()),
+    QWEN_MAX("qwen-max", new ModelConfig.Builder()
+            .withModelName("qwen-max")
+            .withUrl(null)
+            .withContextLength(16385)
+            .withTemperature(0.5)
+            .withFrequencyPenalty(0)
+            .withPresencePenalty(0)
+            .build()),
+    QWEN_PLUS("qwen-plus", new ModelConfig.Builder()
+            .withModelName("qwen-plus")
+            .withUrl(null)
+            .withContextLength(16385)
+            .withTemperature(0.5)
+            .withFrequencyPenalty(0)
+            .withPresencePenalty(0)
+            .build()),
+    DEEP_SEEK("deepseek-v3", new ModelConfig.Builder()
+            .withModelName("deepseek-v3")
+            .withUrl(null)
+            .withContextLength(16385)
+            .withTemperature(0.5)
+            .withFrequencyPenalty(0)
+            .withPresencePenalty(0)
             .build());
+
 
     private final String modelName;
     private final ModelConfig defaultConfig;

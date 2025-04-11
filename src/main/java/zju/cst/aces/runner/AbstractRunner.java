@@ -6,6 +6,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.apache.commons.collections.CollectionUtils;
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
 import zju.cst.aces.api.Task;
 import zju.cst.aces.api.config.Config;
@@ -339,6 +340,11 @@ public abstract class AbstractRunner {
             }
             sourceDepMethods += depMethodInfo.getSourceCode() + "\n";
         }
+
+        if (CollectionUtils.isEmpty(depMethods)) {
+            sourceDepMethods += depClassInfo.getCompilationUnitCode();
+        }
+
         String getterSetter = joinLines(depClassInfo.getterSetterBrief) + "\n";
         return basicInfo + getterSetter + sourceDepMethods + "}";
     }
