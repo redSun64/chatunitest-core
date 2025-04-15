@@ -157,40 +157,7 @@ public class Task {
         }
         Phase phase = PhaseImpl.createPhase(config);
         phase.prepare();
-        List<String> classPaths = ProjectParser.scanSourceDirectory(project);
 
-        try {
-            config.setJobCount(new AtomicInteger(Counter.countMethod(config.getTmpOutput())));
-        } catch (IOException e) {
-            log.error("Error when counting methods: " + e);
-        }
-
-        if (config.isEnableMultithreading() == true) {
-            projectJob(classPaths);
-        } else {
-            for (String classPath : classPaths) {
-                String className = classPath.substring(classPath.lastIndexOf(File.separator) + 1, classPath.lastIndexOf("."));
-                try {
-                    String fullClassName = getFullClassName(config, className);
-                    log.info(String.format("\n==========================\n[%s] Generating tests for class < ",config.pluginSign) + className + " > ...");
-                    ClassInfo info = AbstractRunner.getClassInfo(config, fullClassName);
-                    if (!Counter.filter(info)) {
-                        config.getLogger().info("Skip class: " + classPath);
-                        continue;
-                    }
-
-                    this.runner.runClass(fullClassName);
-                } catch (IOException e) {
-                    log.error(String.format("[%s] Generate tests for class ",config.pluginSign) + className + " failed: " + e);
-                }
-            }
-        }
-
-        log.info(String.format("\n==========================\n[%s] Generation finished",config.pluginSign));
-
-        Path testOutPutPath = config.getTestOutput();
-        classNameProcessor.processJavaFiles(testOutPutPath);
-        log.info(String.format("\n==========================\n[%s] Test processed",config.pluginSign));
     }
 
     public void projectJob(List<String> classPaths) {
