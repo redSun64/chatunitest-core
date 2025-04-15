@@ -19,7 +19,9 @@ The focal method is `${method_sig}` in the focal class `${class_name}`,
 </#if>
 Information of the focal method is
 ```${full_fm}```.
-
+<#if initial_method?has_content>
+    the class has initial method code is `${initial_method}`.
+</#if>
 <#if other_method_sigs?has_content>
     Signatures of Other methods in the focal class are `${other_method_sigs}`.
 </#if>
@@ -28,6 +30,6 @@ Information of the focal method is
     ```${c_deps[key]}```.
 </#list>
 <#list m_deps?keys as key>
-    The brief information of dependent class `${key}` is
+    The brief information of dependent method `${key}` is
     ```${m_deps[key]}```.
 </#list>
