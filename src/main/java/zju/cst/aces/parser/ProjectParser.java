@@ -89,7 +89,7 @@ public class ProjectParser {
                 }
                 ClassParser classParser = new ClassParser(parser, config.getProject(), output,
                         config.getLogger(),  config.getGSON(), config.sharedInteger, config.classMapping, config.ocm);
-                int classNum = classParser.extractClass(cu);
+                int classNum = classParser.extractClass(cu, outputPath);
 
                 if (classNum == 0) {
                     continue;

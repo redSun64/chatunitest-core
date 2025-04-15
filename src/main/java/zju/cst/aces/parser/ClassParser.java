@@ -19,6 +19,7 @@ import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclar
 import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import com.google.gson.Gson;
 import lombok.var;
+import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import slicing.graphs.CallGraph;
 import slicing.graphs.sdg.SDG;
@@ -102,10 +103,14 @@ public class ClassParser {
         return classes.size() + enums.size();
     }
 
-    public int extractClass(CompilationUnit cu) {
+    public int extractClass(CompilationUnit cu, Path projectOutputPath) {
         List<ClassOrInterfaceDeclaration> classes = cu.findAll(ClassOrInterfaceDeclaration.class);
+        int index = 0;
         for (ClassOrInterfaceDeclaration classDeclaration : classes) {
             try {
+                if (index > 0) {
+                    classOutputPath = projectOutputPath.resolve(classes.get(0).getFullyQualifiedName().orElseThrow(() -> new NoSuchElementException("Fully qualified name not present")).replace(".", File.separator));
+                }
                 classInfo = getInfoByClass(cu, classDeclaration);
                 exportClassInfo(classInfo, classDeclaration);
                 extractConstructors(cu, classDeclaration);
@@ -116,6 +121,7 @@ public class ClassParser {
             } catch (Exception e) {
                 logger.error("In ClassParser.extractClass Exception: when parse class " + classDeclaration.getNameAsString() + " :\n" + e);
             }
+            index++;
         }
 
         // 处理枚举类
@@ -181,7 +187,8 @@ public class ClassParser {
                 getGetterSetterSig(cu, classNode),
                 getGetterSetter(cu, classNode),
                 getConstructorDeps(cu, classNode),
-                getSubClasses(classNode)
+                getSubClasses(classNode),
+                getInitializer(cu)
         );
 
         ci.setPublic(classNode.isPublic());
@@ -521,6 +528,15 @@ public class ClassParser {
             cSigs.add(c.getSignature().asString());
         });
         return cSigs;
+    }
+
+    private String getInitializer(CompilationUnit cu) {
+        List<InitializerDeclaration> all = cu.findAll(InitializerDeclaration.class);
+        if (CollectionUtils.isNotEmpty(all)) {
+            InitializerDeclaration initializerDeclaration = all.get(0);
+            return initializerDeclaration.toString();
+        }
+        return null;
     }
 
     private List<String> getBriefConstructors(CompilationUnit cu, ClassOrInterfaceDeclaration node) {

@@ -436,7 +436,7 @@ public class Config {
         public ConfigBuilder model(String model) {
             this.model = Model.fromString(model);
             this.maxPromptTokens = this.model.getDefaultConfig().getContextLength() * 2 / 3;
-            this.maxResponseTokens = 1024;
+            this.maxResponseTokens = 12000;
             this.minErrorTokens = this.maxPromptTokens * 1 / 2 - this.maxResponseTokens;
             if (this.minErrorTokens < 0) {
                 this.minErrorTokens = 512;

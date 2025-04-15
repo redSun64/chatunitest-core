@@ -92,6 +92,9 @@ public abstract class AbstractRunner {
             cu.addImport("org.junit.jupiter.api.Assertions", true, true);
             cu.addImport("org.junit.jupiter.api.extension.ExtendWith", false, false);
             cu.addImport("org.mockito.junit.jupiter.MockitoExtension", false, false);
+            cu.addImport("org.mockito.quality", false, true);
+            cu.addImport("org.springframework.test.util", false, true);
+            cu.addImport("org.mockito.junit.jupiter.MockitoSettings", false, false);
             imports.forEach(i -> cu.addImport(i.replace("import ", "").replace(";", "")));
             return cu.toString();
         } catch (ParseProblemException e) {
@@ -332,18 +335,20 @@ public abstract class AbstractRunner {
         }
 
         String sourceDepMethods = "";
-        for (String sig : depMethods) {
-            //TODO: identify used fields in dependent class
-            MethodInfo depMethodInfo = getMethodInfo(config, depClassInfo, sig);
-            if (depMethodInfo == null) {
-                continue;
+
+        if (classSig.contains("enum") || classSig.contains("dto") || classSig.contains("entity")) {
+            sourceDepMethods += depClassInfo.getCompilationUnitCode();
+        } else {
+            for (String sig : depMethods) {
+                //TODO: identify used fields in dependent class
+                MethodInfo depMethodInfo = getMethodInfo(config, depClassInfo, sig);
+                if (depMethodInfo == null) {
+                    continue;
+                }
+                sourceDepMethods += depMethodInfo.getSourceCode() + "\n";
             }
-            sourceDepMethods += depMethodInfo.getSourceCode() + "\n";
         }
 
-        if (CollectionUtils.isEmpty(depMethods)) {
-            sourceDepMethods += depClassInfo.getCompilationUnitCode();
-        }
 
         String getterSetter = joinLines(depClassInfo.getterSetterBrief) + "\n";
         return basicInfo + getterSetter + sourceDepMethods + "}";

@@ -72,13 +72,29 @@ public enum Model {
     QWEN_PLUS("qwen-plus", new ModelConfig.Builder()
             .withModelName("qwen-plus")
             .withUrl(null)
-            .withContextLength(16385)
+            .withContextLength(1000000)
             .withTemperature(0.5)
             .withFrequencyPenalty(0)
             .withPresencePenalty(0)
             .build()),
-    DEEP_SEEK("deepseek-v3", new ModelConfig.Builder()
-            .withModelName("deepseek-v3")
+    QWEN_CODER_PLUS("qwen-coder-plus", new ModelConfig.Builder()
+            .withModelName("qwen-coder-plus")
+            .withUrl(null)
+            .withContextLength(1000000)
+            .withTemperature(0.5)
+            .withFrequencyPenalty(0)
+            .withPresencePenalty(0)
+            .build()),
+    DOU_BAO("doubao-1-5-pro-256k-250115", new ModelConfig.Builder()
+            .withModelName("doubao-1-5-pro-256k-250115")
+            .withUrl(null)
+            .withContextLength(1000000)
+            .withTemperature(0.5)
+            .withFrequencyPenalty(0)
+            .withPresencePenalty(0)
+            .build()),
+    DEEP_SEEK("deepseek-v3-250324", new ModelConfig.Builder()
+            .withModelName("deepseek-v3-250324")
             .withUrl(null)
             .withContextLength(16385)
             .withTemperature(0.5)
@@ -112,4 +128,6 @@ public enum Model {
         throw new IllegalArgumentException("No Model with name " + modelName +
                 "\nSupport models: " + Arrays.stream(Model.values()).map(Model::getModelName).collect(Collectors.joining(", ")));
     }
+
+
 }
