@@ -141,6 +141,7 @@ public class PromptTemplate {
         this.dataModel.put("fields", AbstractRunner.joinLines(promptInfo.getClassInfo().fields));
         this.dataModel.put("full_method_info",promptInfo.getMethodInfo().full_method_info);
         this.dataModel.put("subClasses",promptInfo.getClassInfo().subClasses);
+        this.dataModel.put("initial_method", promptInfo.getClassInfo().getInitializerCode());
         if (!promptInfo.getClassInfo().constructorSigs.isEmpty()) {
             this.dataModel.put("constructor_sigs", AbstractRunner.joinLines(promptInfo.getClassInfo().constructorBrief));
             this.dataModel.put("constructor_bodies", AbstractRunner.getBodies(config, promptInfo.getClassInfo(), promptInfo.getClassInfo().constructorSigs));
