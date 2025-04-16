@@ -100,6 +100,14 @@ public enum Model {
             .withTemperature(0.5)
             .withFrequencyPenalty(0)
             .withPresencePenalty(0)
+            .build()),
+    GEMINI("gemini-2.5-pro-exp-03-25", new ModelConfig.Builder()
+            .withModelName("gemini-2.5-pro-exp-03-25")
+            .withUrl(null)
+            .withContextLength(16385)
+            .withTemperature(0.5)
+            .withFrequencyPenalty(0)
+            .withPresencePenalty(0)
             .build());
 
 
